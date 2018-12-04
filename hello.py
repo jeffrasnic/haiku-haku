@@ -12,7 +12,7 @@ class MyClient(discord.Client):
         if message.guild != None:
             if message.content.startswith('!message'):
                 channel = message.channel
-                await channel.send(message)
+                await channel.send(message.content)
 
         if message.content.startswith('!she'):
             guild = client.get_guild(467521350643351566)
