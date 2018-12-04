@@ -9,6 +9,11 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         if message.author == self.user:
             return
+        if message.guild != None:
+            if message.content.startswith('!message'):
+                channel = message.channel
+                await channel.send(message)
+
         if message.content.startswith('!she'):
             guild = client.get_guild(467521350643351566)
             channel = message.channel
@@ -45,7 +50,6 @@ class MyClient(discord.Client):
         elif message.content.startswith('!help'):
             channel = message.channel
             await channel.send('I can give you pronoun roles on Haiku Haven! Just use !he or !she or !they for your role, if you already have that role, I will remove it.')
-
 
 client = MyClient()
 client.run('NDY5MjYxNDEyMTk2Mjg2NDY0.DjFM6A.nI3bhn56F3z0yEpueencffzNvOI')
