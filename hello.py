@@ -11,8 +11,19 @@ class MyClient(discord.Client):
             return
         if message.guild != None:
             if message.content.startswith('!message'):
-                channel = message.channel
-                await channel.send(message.content)
+                channel = message.guild.get_channel(518131736362614809)
+                await channel.send(message.content[9:])
+                await message.delete()
+            elif message.content.startswith('!reaction'):
+                newmsg = message.content.split()
+                channel = message.guild.get_channel(518131736362614809)
+                print(newmsg[0])
+                msgReact = await channel.get_message(newmsg[1])
+                if message.content.startswith('!reaction_remove'):
+                    await msgReact.remove_reaction(newmsg[2], self.user)
+
+                elif message.content.startswith('!reaction_add'):
+                    await msgReact.add_reaction(newmsg[2])
 
         if message.content.startswith('!she'):
             guild = client.get_guild(467521350643351566)
