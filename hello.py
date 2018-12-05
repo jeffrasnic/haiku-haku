@@ -1,5 +1,8 @@
 import discord
-
+import yaml
+with open('client.yaml') as f:
+    # use safe_load instead load
+    token = yaml.safe_load(f)
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -63,4 +66,4 @@ class MyClient(discord.Client):
             await channel.send('I can give you pronoun roles on Haiku Haven! Just use !he or !she or !they for your role, if you already have that role, I will remove it.')
 
 client = MyClient()
-client.run('NDY5MjYxNDEyMTk2Mjg2NDY0.DjFM6A.nI3bhn56F3z0yEpueencffzNvOI')
+client.run(token["token"])
