@@ -8,25 +8,40 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
         print(discord.__version__)
+        print('Version: {0}'.format(token["version"]))
 
     async def on_message(self, message):
         if message.author == self.user:
             return
         if message.guild != None:
             if message.content.startswith('!message'):
-                channel = message.guild.get_channel(518131736362614809)
-                await channel.send(message.content[9:])
-                await message.delete()
+                newmsg = message.content.split()
+                channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
+                channel = message.guild.get_channel(int(channelString))
+                print(newmsg[0])
+                print(newmsg[1])
+
+                string = ""
+                for f in newmsg[2:]:
+                    string+=f
+                    string+=' '
+
+                await channel.send(string)
+                
+                if message.content.startswith('!messagedel'):
+                    await message.delete()
             elif message.content.startswith('!reaction'):
                 newmsg = message.content.split()
-                channel = message.guild.get_channel(518131736362614809)
+                channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
+                channel = message.guild.get_channel(int(channelString))
                 print(newmsg[0])
-                msgReact = await channel.get_message(newmsg[1])
+                print(newmsg[1])
+                msgReact = await channel.get_message(newmsg[2])
                 if message.content.startswith('!reaction_remove'):
-                    await msgReact.remove_reaction(newmsg[2], self.user)
+                    await msgReact.remove_reaction(newmsg[3], self.user)
 
                 elif message.content.startswith('!reaction_add'):
-                    await msgReact.add_reaction(newmsg[2])
+                    await msgReact.add_reaction(newmsg[3])
 
         if message.content.startswith('!she'):
             guild = client.get_guild(467521350643351566)
@@ -39,17 +54,9 @@ class MyClient(discord.Client):
             else:
                 await member.remove_roles(sheRole)
                 await channel.send('I have removed the She/Her role from you on Haiku Haven!')
-        elif message.content.startswith('!he'):
-            guild = client.get_guild(467521350643351566)
+        elif message.content.startswith('!help'):
             channel = message.channel
-            member = guild.get_member(message.author.id)
-            heRole = discord.utils.get(guild.roles, id=469254624155664394)
-            if discord.utils.find(lambda m: m.id == 469254624155664394, member.roles) == None:
-                await member.add_roles(heRole)
-                await channel.send('I have added the He/Him role to you on Haiku Haven!')
-            else:
-                await member.remove_roles(heRole)
-                await channel.send('I have removed the He/Him role from you on Haiku Haven!')
+            await channel.send('I can give you pronoun roles on Haiku Haven! Just use !he or !she or !they for your role, if you already have that role, I will remove it.')
         elif message.content.startswith('!they'):
             guild = client.get_guild(467521350643351566)
             channel = message.channel
@@ -61,9 +68,17 @@ class MyClient(discord.Client):
             else:
                 await member.remove_roles(theyRole)
                 await channel.send('I have removed the They/Them role from you on Haiku Haven!')
-        elif message.content.startswith('!help'):
+        elif message.content.startswith('!he'):
+            guild = client.get_guild(467521350643351566)
             channel = message.channel
-            await channel.send('I can give you pronoun roles on Haiku Haven! Just use !he or !she or !they for your role, if you already have that role, I will remove it.')
+            member = guild.get_member(message.author.id)
+            heRole = discord.utils.get(guild.roles, id=469254624155664394)
+            if discord.utils.find(lambda m: m.id == 469254624155664394, member.roles) == None:
+                await member.add_roles(heRole)
+                await channel.send('I have added the He/Him role to you on Haiku Haven!')
+            else:
+                await member.remove_roles(heRole)
+                await channel.send('I have removed the He/Him role from you on Haiku Haven!')
 
 client = MyClient()
 client.run(token["token"])
