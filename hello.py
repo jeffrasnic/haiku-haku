@@ -6,14 +6,14 @@ with open('client.yaml') as f:
 
 class MyClient(discord.Client):
     async def on_ready(self):
-        print('Logged on as {0}!'.format(self.user))
-        print(discord.__version__)
+        print('Logged on as {0}!\n'.format(self.user))
+        print("{0}\n".format(discord.__version__))
         print('Version: {0}'.format(token["version"]))
 
     async def on_message(self, message):
         if message.author == self.user:
             return
-        if message.guild != None:
+        if message.guild != None and message.author.permissions_in(message.channel).administrator:
             if message.content.startswith('!message'):
                 newmsg = message.content.split()
                 channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
