@@ -18,15 +18,13 @@ class MyClient(discord.Client):
                 newmsg = message.content.split()
                 channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
                 channel = message.guild.get_channel(int(channelString))
+
                 print(newmsg[0])
                 print(newmsg[1])
 
-                string = ""
-                for f in newmsg[2:]:
-                    string+=f
-                    string+=' '
-
-                await channel.send(string)
+                sendMsgI = len(newmsg[0]) + len(newmsg[1]) + 2
+                
+                await channel.send(message.content[sendMsgI:])
                 
                 if message.content.startswith('!messagedel'):
                     await message.delete()
