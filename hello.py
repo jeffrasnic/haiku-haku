@@ -77,6 +77,8 @@ class MyClient(discord.Client):
             else:
                 await member.remove_roles(heRole)
                 await channel.send('I have removed the He/Him role from you on Haiku Haven!')
+        elif message.content.startswith("!version"):
+            await message.channel.send(token["version"])
 
 client = MyClient()
 client.run(token["token"])
