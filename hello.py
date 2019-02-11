@@ -35,11 +35,13 @@ class MyClient(discord.Client):
                 print(newmsg[0])
                 print(newmsg[1])
                 msgReact = await channel.get_message(newmsg[2])
+
+                reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
                 if message.content.startswith('!reaction_remove'):
-                    await msgReact.remove_reaction(newmsg[3], self.user)
+                    await msgReact.remove_reaction(reaction, self.user)
 
                 elif message.content.startswith('!reaction_add'):
-                    await msgReact.add_reaction(newmsg[3])
+                    await msgReact.add_reaction(reaction)
 
         if message.content.startswith('!she'):
             guild = client.get_guild(467521350643351566)
