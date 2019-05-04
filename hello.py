@@ -42,6 +42,40 @@ class MyClient(discord.Client):
 
                 elif message.content.startswith('!reaction_add'):
                     await msgReact.add_reaction(reaction)
+            elif message.content.startswith('!contest_reactions'):
+                newmsg = message.content.split()
+                channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
+                channel = message.guild.get_channel(int(channelString))
+                print(newmsg[0])
+                print(newmsg[1])
+                number = int(newmsg[2])
+
+                reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+
+                print(number)
+                print(reaction)
+                
+                if message.content.startswith('!contest_reactions '):
+                    async for m in channel.history(limit=number):
+                        await m.add_reaction(reaction)
+                    if not message.content.endswith(' \silence'):
+                        await message.channel.send('Done! Added ' + str(number) + ' reactions.')
+                elif message.content.startswith('!contest_reactions_del'):
+                    async for m in channel.history(limit=number):
+                        await m.remove_reaction(reaction, self.user)
+                    if not message.content.endswith(' \silence'):
+                        await message.channel.send('Done! Removed ' + str(number) + ' reactions.')
+            elif message.content.startswith('!purge'):
+                newmsg = message.content.split()
+                channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
+                channel = message.guild.get_channel(int(channelString))
+                number = int(newmsg[2])
+
+                print(newmsg[0])
+                print(newmsg[1])
+
+                async for m in channel.history(limit=number):
+                    await m.delete()
 
         if message.content.startswith('!she'):
             guild = client.get_guild(467521350643351566)
