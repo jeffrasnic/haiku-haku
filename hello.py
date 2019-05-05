@@ -86,12 +86,14 @@ async def reaction_add(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
-    print(newmsg[0])
-    print(newmsg[1])
-    msgReact = await channel.get_message(newmsg[2])
+    
+    if ctx.message.author.permissions_in(channel).administrator:
+        print(newmsg[0])
+        print(newmsg[1])
+        msgReact = await channel.get_message(newmsg[2])
 
-    reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
-    await msgReact.add_reaction(reaction)
+        reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+        await msgReact.add_reaction(reaction)
 
 @bot.command()
 async def reaction_remove(ctx):
@@ -99,12 +101,14 @@ async def reaction_remove(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
-    print(newmsg[0])
-    print(newmsg[1])
-    msgReact = await channel.get_message(newmsg[2])
 
-    reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
-    await msgReact.remove_reaction(reaction, bot.user)
+    if ctx.message.author.permissions_in(channel).administrator:
+        print(newmsg[0])
+        print(newmsg[1])
+        msgReact = await channel.get_message(newmsg[2])
+
+        reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+        await msgReact.remove_reaction(reaction, bot.user)
 
 @bot.command()
 async def contest_reactions(ctx):
@@ -112,19 +116,21 @@ async def contest_reactions(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
-    print(newmsg[0])
-    print(newmsg[1])
-    number = int(newmsg[2])
 
-    reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+    if ctx.message.author.permissions_in(channel).administrator:
+        print(newmsg[0])
+        print(newmsg[1])
+        number = int(newmsg[2])
 
-    print(number)
-    print(reaction)
-    
-    async for m in channel.history(limit=number):
-        await m.add_reaction(reaction)
-    if not message.content.endswith(' \silence'):
-        await message.channel.send('Done! Added ' + str(number) + ' reactions.')
+        reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+
+        print(number)
+        print(reaction)
+        
+        async for m in channel.history(limit=number):
+            await m.add_reaction(reaction)
+        if not message.content.endswith(' \silence'):
+            await message.channel.send('Done! Added ' + str(number) + ' reactions.')
 
 @bot.command()
 async def contest_reactions_del(ctx):
@@ -132,19 +138,21 @@ async def contest_reactions_del(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
-    print(newmsg[0])
-    print(newmsg[1])
-    number = int(newmsg[2])
 
-    reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+    if ctx.message.author.permissions_in(channel).administrator:
+        print(newmsg[0])
+        print(newmsg[1])
+        number = int(newmsg[2])
 
-    print(number)
-    print(reaction)
-    
-    async for m in channel.history(limit=number):
-        await m.remove_reaction(reaction, bot.user)
-    if not message.content.endswith(' \silence'):
-        await message.channel.send('Done! Removed ' + str(number) + ' reactions.')
+        reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
+
+        print(number)
+        print(reaction)
+        
+        async for m in channel.history(limit=number):
+            await m.remove_reaction(reaction, bot.user)
+        if not message.content.endswith(' \silence'):
+            await message.channel.send('Done! Removed ' + str(number) + ' reactions.')
 
 @bot.command()
 async def she(ctx):
