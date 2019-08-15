@@ -18,12 +18,12 @@ async def version(ctx):
 
 @bot.command()
 async def message(ctx):
-    if ctx.message.author.permissions_in(ctx.message.channel).administrator:
-        message = ctx.message
-        newmsg = message.content.split()
-        channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
-        channel = message.guild.get_channel(int(channelString))
+    message = ctx.message
+    newmsg = message.content.split()
+    channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
+    channel = message.guild.get_channel(int(channelString))
 
+    if ctx.message.author.permissions_in(ctx.message.channel).administrator:
         print(newmsg[0])
         print(newmsg[1])
 
@@ -33,12 +33,12 @@ async def message(ctx):
     
 @bot.command()
 async def messagedel(ctx):
-    if ctx.message.author.permissions_in(ctx.message.channel).administrator:
-        message = ctx.message
-        newmsg = message.content.split()
-        channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
-        channel = message.guild.get_channel(int(channelString))
+    message = ctx.message
+    newmsg = message.content.split()
+    channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
+    channel = message.guild.get_channel(int(channelString))
 
+    if ctx.message.author.permissions_in(ctx.message.channel).administrator:
         print(newmsg[0])
         print(newmsg[1])
 
@@ -53,7 +53,9 @@ async def purge(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
+
     if ctx.message.author.permissions_in(channel).administrator:
+
         confirmNum = random.randint(1, 10000)
         number = int(newmsg[2])
         print(newmsg[0])
@@ -86,10 +88,11 @@ async def reaction_add(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
-    
+
     if ctx.message.author.permissions_in(channel).administrator:
         print(newmsg[0])
         print(newmsg[1])
+
         msgReact = await channel.get_message(newmsg[2])
 
         reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
@@ -101,7 +104,7 @@ async def reaction_remove(ctx):
     newmsg = message.content.split()
     channelString = newmsg[1].replace("<", "").replace(">", "").replace("#", "")
     channel = message.guild.get_channel(int(channelString))
-
+        
     if ctx.message.author.permissions_in(channel).administrator:
         print(newmsg[0])
         print(newmsg[1])
@@ -199,7 +202,7 @@ async def they(ctx):
 @bot.event
 async def on_ready():
         print('Logged on as {0}!\n'.format(bot.user))
-        print("{0}\n".format(discord.__version__))
+        print("Discord.py Version: {0}\n".format(discord.__version__))
         print('Version: {0}'.format(token["version"]))
 
 @bot.event
@@ -207,5 +210,23 @@ async def on_message(message):
         if message.author == bot.user:
             return
         await bot.process_commands(message)
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    print("Detected reaction add")
+    if payload.message_id == 611665321400729631:
+        print("Detected reaction on message")
+        guild = bot.get_guild(467521350643351566)
+        user = guild.get_member(payload.user_id)
+        await user.add_roles(discord.utils.get(guild.roles, id=610160581768511562))
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    print("Detected reaction remove")
+    if payload.message_id == 611665321400729631:
+        print("Detected reaction on message")
+        guild = bot.get_guild(467521350643351566)
+        user = guild.get_member(payload.user_id)
+        await user.remove_roles(discord.utils.get(guild.roles, id=610160581768511562))
 
 bot.run(token["token"])
