@@ -227,6 +227,6 @@ async def on_raw_reaction_remove(payload):
         print("Detected reaction on message")
         guild = bot.get_guild(467521350643351566)
         user = guild.get_member(payload.user_id)
-        await user.remove_roles(discord.utils.get(guild.roles, id=610160581768511562))
+        await user.remove_roles(discord.utils.get(guild.roles, id=611698983412170764))
 
 bot.run(token["token"])
