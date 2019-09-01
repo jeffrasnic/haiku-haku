@@ -93,7 +93,7 @@ async def reaction_add(ctx):
         print(newmsg[0])
         print(newmsg[1])
 
-        msgReact = await channel.get_message(newmsg[2])
+        msgReact = await channel.fetch_message(newmsg[2])
 
         reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
         await msgReact.add_reaction(reaction)
@@ -108,7 +108,7 @@ async def reaction_remove(ctx):
     if ctx.message.author.permissions_in(channel).administrator:
         print(newmsg[0])
         print(newmsg[1])
-        msgReact = await channel.get_message(newmsg[2])
+        msgReact = await channel.fetch_message(newmsg[2])
 
         reaction = newmsg[3].replace("<", "").replace(">", "").replace("#","")
         await msgReact.remove_reaction(reaction, bot.user)
@@ -214,7 +214,7 @@ async def on_message(message):
 @bot.event
 async def on_raw_reaction_add(payload):
     print("Detected reaction add")
-    if payload.message_id == 611665321400729631:
+    if payload.message_id == 611698983412170764:
         print("Detected reaction on message")
         guild = bot.get_guild(467521350643351566)
         user = guild.get_member(payload.user_id)
@@ -223,7 +223,7 @@ async def on_raw_reaction_add(payload):
 @bot.event
 async def on_raw_reaction_remove(payload):
     print("Detected reaction remove")
-    if payload.message_id == 611665321400729631:
+    if payload.message_id == 611698983412170764:
         print("Detected reaction on message")
         guild = bot.get_guild(467521350643351566)
         user = guild.get_member(payload.user_id)
